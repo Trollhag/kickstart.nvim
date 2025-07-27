@@ -992,16 +992,25 @@ require('lazy').setup({
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
 
-  -- {
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   branch = 'v3.x',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'MunifTanjim/nui.nvim',
-  --     'nvim-tree/nvim-web-devicons', -- optional, but recommended
-  --   },
-  --   lazy = false, -- neo-tree will lazily load itself
-  -- },
+  { -- This plugin
+    'Zeioth/compiler.nvim',
+    cmd = { 'CompilerOpen', 'CompilerToggleResults', 'CompilerRedo' },
+    dependencies = { 'stevearc/overseer.nvim', 'nvim-telescope/telescope.nvim' },
+    opts = {},
+  },
+  { -- The task runner we use
+    'stevearc/overseer.nvim',
+    commit = '6271cab7ccc4ca840faa93f54440ffae3a3918bd',
+    cmd = { 'CompilerOpen', 'CompilerToggleResults', 'CompilerRedo' },
+    opts = {
+      task_list = {
+        direction = 'bottom',
+        min_height = 25,
+        max_height = 25,
+        default_detail = 1,
+      },
+    },
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1023,6 +1032,15 @@ require('lazy').setup({
     },
   },
 })
+
+-- Open compiler
+vim.keymap.set('n', '<leader>co', '<cmd>CompilerOpen<cr>', { noremap = true, desc = '[C]ompiler [O]pen' })
+
+-- Stop compiler
+vim.keymap.set('n', '<leader>cs', '<cmd>CompilerStop<cr>', { noremap = true, desc = '[C]ompiler [S]top' })
+
+-- Toggle compiler results
+vim.keymap.set('n', '<leader>ct', '<cmd>CompilerToggleResults<cr>', { noremap = true, desc = '[C]ompiler [T]oggle results' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
